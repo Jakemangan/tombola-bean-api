@@ -1,0 +1,16 @@
+{
+    "defaultEnv": "dev",
+    "sql-file": true,
+    "dev": {
+      "driver": "sqlite3",
+      "filename": "data/app.sqlite"
+    },
+    "test": {
+      "driver": "sqlite3",
+      "filename": "data/test.sqlite"
+    },
+    "prod": {
+      "driver": "sqlite3",
+      "filename": "data/app.sqlite"
+    }
+  }

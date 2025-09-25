@@ -1,0 +1,89 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "Launch NestJS (ts-node)",
+            "cwd": "${workspaceFolder}/bean-api",
+            "runtimeExecutable": "node",
+            "runtimeArgs": [
+                "--nolazy",
+                "-r",
+                "ts-node/register",
+                "-r",
+                "tsconfig-paths/register"
+            ],
+            "env": {
+                "TS_NODE_TRANSPILE_ONLY": "true"
+            },
+            "args": [
+                "${workspaceFolder}/bean-api/src/main.ts"
+            ],
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "Launch Nest CLI (watch)",
+            "cwd": "${workspaceFolder}/bean-api",
+            "program": "${workspaceFolder}/bean-api/node_modules/.bin/nest",
+            "args": [
+                "start",
+                "--watch"
+            ],
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
+        },
+        {
+            "type": "pwa-node",
+            "request": "attach",
+            "name": "Attach to Nest (9229)",
+            "port": 9229,
+            "restart": true,
+            "timeout": 30000,
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "Jest Tests (debug)",
+            "cwd": "${workspaceFolder}/bean-api",
+            "runtimeExecutable": "node",
+            "runtimeArgs": [
+                "--inspect-brk",
+                "-r",
+                "ts-node/register",
+                "-r",
+                "tsconfig-paths/register"
+            ],
+            "args": [
+                "${workspaceFolder}/bean-api/node_modules/jest/bin/jest.js",
+                "--runInBand"
+            ],
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Start:debug and Attach",
+            "configurations": [
+                "Attach to Nest (9229)"
+            ],
+            "preLaunchTask": "npm: start:debug"
+        }
+    ]
+}
