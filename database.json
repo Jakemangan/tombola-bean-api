@@ -3,11 +3,11 @@
     "sql-file": true,
     "dev": {
       "driver": "sqlite3",
-      "filename": "data/app.sqlite"
+      "filename": "db.sqlite"
     },
     "test": {
       "driver": "sqlite3",
-      "filename": "data/test.sqlite"
+      "filename": "db.sqlite"
     },
     "prod": {
       "driver": "sqlite3",
