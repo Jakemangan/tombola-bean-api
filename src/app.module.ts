@@ -13,13 +13,35 @@ import { SQLITE_DB } from './util/constants';
 import { BeanRepo } from './repos/bean.repo';
 import { ConfigModule } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
+import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 import { BotdSchedulerService } from './services/botd.scheduler.service';
 import { BotdController } from './routes/botd/botd.controller';
 import { SearchController } from './routes/search/search.controller';
 import { SearchService } from './services/search.service';
 
 @Module({
-  imports: [ConfigModule.forRoot({ isGlobal: true }), ScheduleModule.forRoot()],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    ScheduleModule.forRoot(),
+    ThrottlerModule.forRoot([
+      {
+        name: 'short',
+        ttl: 5000,
+        limit: 3, 
+      },
+      {
+        name: 'medium',
+        ttl: 10000, 
+        limit: 20, 
+      },
+      {
+        name: 'long',
+        ttl: 60000,
+        limit: 100, 
+      },
+    ]),
+  ],
   controllers: [
     AppController,
     AdminBeanController,
@@ -29,6 +51,10 @@ import { SearchService } from './services/search.service';
   providers: [
     AppService,
     BotdSchedulerService,
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
     {
       provide: SQLITE_DB,
       useFactory: () => {
@@ -68,7 +94,6 @@ export class AppModule implements OnModuleInit {
   async onModuleInit() {
     const dbMigrate = DBMigrate.getInstance(true, {
       config: 'database.json',
-      env: 'dev',
     });
     await dbMigrate.up();
 

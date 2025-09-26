@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Bean } from 'src/models/beanDto';
 import { PostBeanRequestBody } from 'src/models/postBeanDto';
 import { BeanRepo } from 'src/repos/bean.repo';
@@ -41,7 +41,7 @@ export class BeanService {
   async getBotd(): Promise<Bean> {
     const botd = await this.beanRepo.selectBotd();
     if (!botd) {
-      throw new Error('No BOTD found');
+      throw new NotFoundException('No Bean of the Day found');
     }
     return botd;
   }

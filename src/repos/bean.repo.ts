@@ -119,11 +119,14 @@ export class BeanRepo {
   }
 
   async searchBeans(criteria: string, value: string): Promise<Bean[]> {
-    const validCriteria = ['colour', 'Name', 'Country'];
+    const validCriteria = ['colour', 'name', 'country'];
     if (!validCriteria.includes(criteria)) {
       throw new Error('Invalid search criteria');
     }
 
+    /*
+     * Criteria value needs to be interpolated into the string to ensure valid SQL query, therefore Criteria param is validated first before interpolation to prevent SQL injection
+     */
     const select = this.sqliteDb.prepare(
       `SELECT * FROM beans WHERE ${criteria} LIKE ?`,
     );
