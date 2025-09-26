@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Bean } from 'src/models/bean';
+import { Bean } from 'src/models/beanDto';
 import { SQLITE_DB } from 'src/util/constants';
 import type { Database as SqliteDb } from 'better-sqlite3';
-import { PostBeanRequestBody } from 'src/models/request/postBeanRequestBody';
+import { PostBeanRequestBody } from 'src/models/postBeanDto';
 
 @Injectable()
 export class BeanRepo {
@@ -116,5 +116,18 @@ export class BeanRepo {
     });
 
     tx(botdId);
+  }
+
+  async searchBeans(criteria: string, value: string): Promise<Bean[]> {
+    const validCriteria = ['colour', 'Name', 'Country'];
+    if (!validCriteria.includes(criteria)) {
+      throw new Error('Invalid search criteria');
+    }
+
+    const select = this.sqliteDb.prepare(
+      `SELECT * FROM beans WHERE ${criteria} LIKE ?`,
+    );
+    const res = select.all(`%${value}%`) as Bean[];
+    return res;
   }
 }

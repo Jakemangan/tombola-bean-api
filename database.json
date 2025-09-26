@@ -4,13 +4,5 @@
     "dev": {
       "driver": "sqlite3",
       "filename": "db.sqlite"
-    },
-    "test": {
-      "driver": "sqlite3",
-      "filename": "db.sqlite"
-    },
-    "prod": {
-      "driver": "sqlite3",
-      "filename": "data/app.sqlite"
     }
   }

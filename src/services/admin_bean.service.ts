@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { Bean } from 'src/models/bean';
-import { PostBeanRequestBody } from 'src/models/request/postBeanRequestBody';
+import { Bean } from 'src/models/beanDto';
+import { PostBeanRequestBody } from 'src/models/postBeanDto';
 import { BeanRepo } from 'src/repos/bean.repo';
 
 @Injectable()

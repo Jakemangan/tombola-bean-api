@@ -10,7 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { BeanService } from '../../services/admin_bean.service';
-import { PostBeanRequestBody } from 'src/models/request/postBeanRequestBody';
+import { PostBeanRequestBody } from 'src/models/postBeanDto';
 import { JwtAuthGuard } from 'src/guards/jwt.guard';
 
 @UseGuards(JwtAuthGuard)
@@ -30,7 +30,10 @@ export class AdminBeanController {
   }
 
   @Put(':id')
-  async putAdmin(@Param('id', ParseIntPipe) id: number, @Body() bean: PostBeanRequestBody) {
+  async putAdmin(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() bean: PostBeanRequestBody,
+  ) {
     await this.beanService.updateBean(String(id), bean);
     return { message: 'Bean updated successfully' };
   }

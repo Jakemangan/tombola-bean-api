@@ -2,6 +2,7 @@ import {
   CanActivate,
   ExecutionContext,
   Injectable,
+  Logger,
   UnauthorizedException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -9,6 +10,8 @@ import { verify, JwtPayload } from 'jsonwebtoken';
 
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
+  private readonly logger = new Logger(JwtAuthGuard.name);
+  
   constructor(private readonly config: ConfigService) {}
 
   canActivate(context: ExecutionContext): boolean {
@@ -27,7 +30,7 @@ export class JwtAuthGuard implements CanActivate {
     const key = this.config.get<string>('JWT_KEY');
 
     if (!issuer || !audience || !key) {
-      console.error(
+      this.logger.error(
         'JWT configuration is invalid, one of issuer, audience, or key is missing',
       );
       throw new UnauthorizedException('Authorization invalid for request');
@@ -42,18 +45,18 @@ export class JwtAuthGuard implements CanActivate {
 
       const now = Math.floor(Date.now() / 1000);
       if (typeof payload?.exp !== 'number') {
-        console.error('Token missing exp');
+        this.logger.error('Token missing exp');
         throw new UnauthorizedException('Authorization invalid for request');
       }
       if (now >= payload.exp) {
-        console.error('Token expired');
+        this.logger.error('Token expired');
         throw new UnauthorizedException('Authorization invalid for request');
       }
 
       (req as any).user = payload;
       return true;
     } catch (e) {
-      console.error('Error when verifying authorization token:', e);
+      this.logger.error('Error when verifying authorization token:', e);
       throw new UnauthorizedException('Authorization invalid for request');
     }
   }

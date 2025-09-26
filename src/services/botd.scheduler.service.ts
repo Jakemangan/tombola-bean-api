@@ -8,7 +8,9 @@ export class BotdSchedulerService {
 
   constructor(private readonly beanRepo: BeanRepo) {}
 
+
   @Cron(CronExpression.EVERY_MINUTE)
+  // @Cron(CronExpression.EVERY_DAY_AT_1AM) // This is the cron expression to be used for once a day, but for testing purposes this is set to every minute so the output of /botd will visibly change
   async selectDailyBotd(): Promise<void> {
     try {
       const current = await this.beanRepo.selectBotd();
