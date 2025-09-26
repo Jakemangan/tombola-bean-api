@@ -7,14 +7,21 @@ import DBMigrate from 'db-migrate';
 import path from 'path';
 import fs from 'fs';
 import { Bean } from './models/bean';
-
-export const SQLITE_DB = 'SQLITE_DB';
+import { AdminBeanController } from './routes/admin_bean/admin_bean.controller';
+import { BeanService } from './services/admin_bean.service';
+import { SQLITE_DB } from './util/constants';
+import { BeanRepo } from './repos/bean.repo';
+import { ConfigModule } from '@nestjs/config';
+import { ScheduleModule } from '@nestjs/schedule';
+import { BotdSchedulerService } from './services/botd.scheduler.service';
+import { BotdController } from './routes/botd/botd.controller';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
+  imports: [ConfigModule.forRoot({ isGlobal: true }), ScheduleModule.forRoot()],
+  controllers: [AppController, AdminBeanController, BotdController],
   providers: [
     AppService,
+    BotdSchedulerService,
     {
       provide: SQLITE_DB,
       useFactory: () => {
@@ -38,6 +45,8 @@ export const SQLITE_DB = 'SQLITE_DB';
       },
       inject: [SQLITE_DB],
     },
+    BeanService,
+    BeanRepo,
   ],
 })
 export class AppModule implements OnModuleInit {

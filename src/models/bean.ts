@@ -1,3 +1,6 @@
+/*
+* Used as DTO for /GET and DBO for Bean model
+*/
 export interface Bean {
   _id: string;
   index: number;
