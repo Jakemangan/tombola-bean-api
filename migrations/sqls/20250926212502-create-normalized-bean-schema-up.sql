@@ -2,7 +2,7 @@
 CREATE TABLE IF NOT EXISTS beansDefinitions (
   id TEXT PRIMARY KEY DEFAULT (uuid()), -- GUID primary key generated with uuid()
   bean_id TEXT UNIQUE NOT NULL, -- Original _id from seed data
-  index_number INTEGER NOT NULL,
+  "index" INTEGER NOT NULL,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS beanImages (
   image_url TEXT NOT NULL,
   alt_text TEXT,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (bean_definition_id) REFERENCES beansDefinitions(id) ON DELETE CASCADE
 );
 
@@ -30,9 +31,9 @@ CREATE TABLE IF NOT EXISTS beanMetadata (
   FOREIGN KEY (bean_definition_id) REFERENCES beansDefinitions(id) ON DELETE CASCADE
 );
 
+-- Indexes
 CREATE INDEX IF NOT EXISTS idx_beansDefinitions_bean_id ON beansDefinitions(bean_id);
-CREATE INDEX IF NOT EXISTS idx_beansDefinitions_name ON beansDefinitions(name);
-CREATE INDEX IF NOT EXISTS idx_beansDefinitions_index_number ON beansDefinitions(index_number);
+CREATE INDEX IF NOT EXISTS idx_beansDefinitions_index ON beansDefinitions("index");
 
 CREATE INDEX IF NOT EXISTS idx_beanImages_bean_definition_id ON beanImages(bean_definition_id);
 
@@ -51,4 +52,10 @@ CREATE TRIGGER IF NOT EXISTS update_beanMetadata_timestamp
   AFTER UPDATE ON beanMetadata
   BEGIN
     UPDATE beanMetadata SET updated_at = CURRENT_TIMESTAMP WHERE id = NEW.id;
+  END;
+
+CREATE TRIGGER IF NOT EXISTS update_beanImages_timestamp 
+  AFTER UPDATE ON beanImages
+  BEGIN
+    UPDATE beanImages SET updated_at = CURRENT_TIMESTAMP WHERE id = NEW.id;
   END;
