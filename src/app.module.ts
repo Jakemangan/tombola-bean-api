@@ -137,6 +137,8 @@ export class AppModule implements OnModuleInit {
     });
 
     tx(seedData);
+
+    this.logger.log("Please open http://localhost:3000/api for swagger documentation")
   }
 
   onModuleDestroy() {
