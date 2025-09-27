@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { BeanRepo } from 'src/repos/bean.repo';
+import { BeanRepo } from '../repos/bean.repo';
 
 @Injectable()
 export class BotdSchedulerService {

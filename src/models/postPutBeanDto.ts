@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class PostBeanRequestBody {
+export class PostPutBeanDto {
   @ApiProperty({
     description: 'Cost of the bean',
     example: '$12.99',

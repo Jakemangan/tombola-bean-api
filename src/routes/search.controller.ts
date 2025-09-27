@@ -2,9 +2,7 @@ import {
   BadRequestException,
   Body,
   Controller,
-  Get,
   Post,
-  Query,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -14,10 +12,9 @@ import {
   ApiBearerAuth,
   ApiBody,
 } from '@nestjs/swagger';
-import { BeanService } from '../../services/admin_bean.service';
 import { SearchService } from 'src/services/search.service';
 import { SearchQueryDto } from 'src/models/searchQueryDto';
-import { Bean } from 'src/models/beanDto';
+import { Bean } from 'src/models/bean';
 import { JwtAuthGuard } from 'src/guards/jwt.guard';
 
 @ApiTags('Bean Search')

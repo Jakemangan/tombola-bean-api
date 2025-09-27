@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Bean } from 'src/models/beanDto';
+import { Bean } from 'src/models/bean';
 import { SQLITE_DB } from 'src/util/constants';
 import type { Database as SqliteDb } from 'better-sqlite3';
-import { PostBeanRequestBody } from 'src/models/postBeanDto';
+import { PostPutBeanDto } from 'src/models/postPutBeanDto';
 
 @Injectable()
 export class BeanRepo {
@@ -14,12 +14,12 @@ export class BeanRepo {
     return res;
   }
 
-  async insertBean(bean: PostBeanRequestBody): Promise<boolean> {
+  async insertBean(bean: PostPutBeanDto): Promise<boolean> {
     const insert = this.sqliteDb.prepare(
       'INSERT INTO beans (Cost, Image, colour, Name, Description, Country) VALUES (?, ?, ?, ?, ?, ?)',
     );
 
-    const tx = this.sqliteDb.transaction((bean: PostBeanRequestBody) => {
+    const tx = this.sqliteDb.transaction((bean: PostPutBeanDto) => {
       const res = insert.run(
         bean.Cost,
         bean.Image,
@@ -40,14 +40,11 @@ export class BeanRepo {
     return txResChanges > 0;
   }
 
-  async updateBean(
-    id: string,
-    beanData: PostBeanRequestBody,
-  ): Promise<boolean> {
+  async updateBean(id: string, beanData: PostPutBeanDto): Promise<boolean> {
     const update = this.sqliteDb.prepare(
       'UPDATE beans SET Cost = ?, Image = ?, colour = ?, Name = ?, Description = ?, Country = ? WHERE _id = ?',
     );
-    const tx = this.sqliteDb.transaction((beanData: PostBeanRequestBody) => {
+    const tx = this.sqliteDb.transaction((beanData: PostPutBeanDto) => {
       const res = update.run(
         beanData.Cost,
         beanData.Image,

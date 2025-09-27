@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { Bean } from 'src/models/beanDto';
-import { BeanRepo } from 'src/repos/bean.repo';
+import { BeanRepo } from '../repos/bean.repo';
+import { Bean } from '../models/bean';
 
 @Injectable()
 export class SearchService {

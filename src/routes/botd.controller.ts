@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { BeanService } from 'src/services/admin_bean.service';
-import { Bean } from 'src/models/beanDto';
+import { Bean } from '../models/bean';
+import { BeanService } from '../services/admin_bean.service';
 
 @ApiTags('Bean of the Day')
 @Controller('botd')

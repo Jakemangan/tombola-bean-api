@@ -1,13 +1,12 @@
 import { Module, OnModuleInit, Inject, Logger } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import Database from 'better-sqlite3';
+import * as Database from 'better-sqlite3';
 import type { Database as SqliteDb } from 'better-sqlite3';
-import DBMigrate from 'db-migrate';
-import path from 'path';
-import fs from 'fs';
-import { Bean } from './models/beanDto';
-import { AdminBeanController } from './routes/admin_bean/admin_bean.controller';
+import * as DBMigrate from 'db-migrate';
+import * as path from 'path';
+import * as fs from 'fs';
+import { Bean } from './models/bean';
 import { BeanService } from './services/admin_bean.service';
 import { SQLITE_DB } from './util/constants';
 import { BeanRepo } from './repos/bean.repo';
@@ -16,9 +15,10 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { BotdSchedulerService } from './services/botd.scheduler.service';
-import { BotdController } from './routes/botd/botd.controller';
-import { SearchController } from './routes/search/search.controller';
+import { BotdController } from './routes/botd.controller';
+import { SearchController } from './routes/search.controller';
 import { SearchService } from './services/search.service';
+import { AdminBeanController } from './routes/admin_bean.controller';
 
 @Module({
   imports: [
@@ -28,17 +28,17 @@ import { SearchService } from './services/search.service';
       {
         name: 'short',
         ttl: 5000,
-        limit: 3, 
+        limit: 3,
       },
       {
         name: 'medium',
-        ttl: 10000, 
-        limit: 20, 
+        ttl: 10000,
+        limit: 20,
       },
       {
         name: 'long',
         ttl: 60000,
-        limit: 100, 
+        limit: 100,
       },
     ]),
   ],

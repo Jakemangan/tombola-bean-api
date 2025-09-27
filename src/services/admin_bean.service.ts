@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Bean } from 'src/models/beanDto';
-import { PostBeanRequestBody } from 'src/models/postBeanDto';
+import { Bean } from 'src/models/bean';
+import { PostPutBeanDto } from 'src/models/postPutBeanDto';
 import { BeanRepo } from 'src/repos/bean.repo';
 
 @Injectable()
@@ -11,7 +11,7 @@ export class BeanService {
     return this.beanRepo.selectAllBeans();
   }
 
-  async createBean(beanData: PostBeanRequestBody): Promise<boolean> {
+  async createBean(beanData: PostPutBeanDto): Promise<boolean> {
     const res = await this.beanRepo.insertBean(beanData);
     if (!res) {
       throw new Error('Failed to insert bean');
@@ -19,11 +19,8 @@ export class BeanService {
     return res;
   }
 
-  async updateBean(
-    id: string,
-    beanData: PostBeanRequestBody,
-  ): Promise<boolean> {
-    const res = this.beanRepo.updateBean(id, beanData);
+  async updateBean(id: string, beanData: PostPutBeanDto): Promise<boolean> {
+    const res = await this.beanRepo.updateBean(id, beanData);
     if (!res) {
       throw new Error('Failed to update bean');
     }
@@ -31,7 +28,7 @@ export class BeanService {
   }
 
   async deleteBean(id: string): Promise<boolean> {
-    const res = this.beanRepo.deleteBean(id);
+    const res = await this.beanRepo.deleteBean(id);
     if (!res) {
       throw new Error('Failed to delete bean');
     }

@@ -17,10 +17,10 @@ import {
   ApiParam,
   ApiBody,
 } from '@nestjs/swagger';
-import { BeanService } from '../../services/admin_bean.service';
-import { PostBeanRequestBody } from 'src/models/postBeanDto';
-import { Bean } from 'src/models/beanDto';
-import { JwtAuthAdminGuard } from 'src/guards/jwtAdmin.guard';
+import { Bean } from '../models/bean';
+import { BeanService } from '../services/admin_bean.service';
+import { JwtAuthAdminGuard } from '../guards/jwtAdmin.guard';
+import { PostPutBeanDto } from '../models/postPutBeanDto';
 
 @ApiTags('Admin Bean Management')
 @ApiBearerAuth('JWT-auth')
@@ -43,7 +43,7 @@ export class AdminBeanController {
 
   @Post()
   @ApiOperation({ summary: 'Create a new bean' })
-  @ApiBody({ type: PostBeanRequestBody })
+  @ApiBody({ type: PostPutBeanDto })
   @ApiResponse({
     status: 201,
     description: 'Bean created successfully',
@@ -56,7 +56,7 @@ export class AdminBeanController {
   })
   @ApiResponse({ status: 400, description: 'Bad request - validation failed' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
-  async postAdmin(@Body() bean: PostBeanRequestBody) {
+  async postAdmin(@Body() bean: PostPutBeanDto) {
     await this.beanService.createBean(bean);
     return { message: 'Bean created successfully' };
   }
@@ -64,7 +64,7 @@ export class AdminBeanController {
   @Put(':id')
   @ApiOperation({ summary: 'Update a bean by ID' })
   @ApiParam({ name: 'id', description: 'Bean ID', type: 'number' })
-  @ApiBody({ type: PostBeanRequestBody })
+  @ApiBody({ type: PostPutBeanDto })
   @ApiResponse({
     status: 200,
     description: 'Bean updated successfully',
@@ -80,7 +80,7 @@ export class AdminBeanController {
   @ApiResponse({ status: 404, description: 'Bean not found' })
   async putAdmin(
     @Param('id', ParseIntPipe) id: number,
-    @Body() bean: PostBeanRequestBody,
+    @Body() bean: PostPutBeanDto,
   ) {
     await this.beanService.updateBean(String(id), bean);
     return { message: 'Bean updated successfully' };
